@@ -1,53 +1,89 @@
-## OOP Lab Test 2020
+# Music Visualiser Project
 
-## Rules
+Name:Richard Dennis
 
-A Gantt chart is a horizontal bar chart that visually represents a project plan over time. On the vertical axis are the list of tasks that make up the project. On the horizontal axis are bars that show when each task begins and ends. In today's test you will be writing a Java program to display a Gantt chart from tasks stored in a csv file and writing code that allows a user to edit the start and end day of each task by dragging the mouse. 
-
-Here is a video of what your finished project should look like:
-
-[![YouTube](http://img.youtube.com/vi/Byub1wE6lDU/0.jpg)](https://youtu.be/Byub1wE6lDU)
-
-There is one file in the data folder of the repository. The file tasks.csv looks like this:
-
-```
-Task,Start,End
-Research,1,5
-Design,6,10
-Phase 1,11,13
-Phase 2,12,16
-Phase 3,16,19
-Integration,21,23
-Testing,21,25
-Evaluation,24,28
-Release,28,30
-```
-
-Each task is stored on a separate line in the file. There are three columns. The task, the start day and the end day. The range of days is between 1 and 30.
+Student Number: C18415664
 
 ## Instructions
+- Fork this repository and use it a starter project for your assignment
+- Create a new package named your student number and put all your code in this package.
+- You should start by creating a subclass of ie.tudublin.Visual
+- There is an example visualiser called MyVisual in the example package
+- Check out the WaveForm and AudioBandsVisual for examples of how to call the Processing functions from other classes that are not subclasses of PApplet
 
-- Fork [this repository](https://github.com/skooter500/OOP-LabTest-2020-Starter) to get the starter project. Clone the forked repo to your computer and check the upstream and origin remotes are set correctly
-- If you are using the shell scripts to compile, don't forget to make the bin folder. You should not need to do this if you are compiling through Visual Studio Code. 
-- Make a class called Task that encapsulates the columns from a single row from the tasks.csv file. Make private fields and public accessor methods. Make a constructor that takes initial values and assigns them to the fields. Make a constructor that takes a Processing TableRow field as a parameter and make an appropriate toString method.
-- In Gantt.java:
-	- Declare an ArrayList to hold instances of the Task class
-	- Write a method called loadTasks that populates the ArrayList from the file tasks.csv
-	- Write a method printTasks that prints the elements of the ArrayList.
-	- Call these methods from setup()
-	- Write a method called displayTasks() that displays the tasks as in the video. Each task should have a separate colour. You can use HSB colour mode to achieve this.  To get full marks you should use the [Processing map](https://processing.org/reference/map_.html) function in your solution
-	- Write code that allows a user to alter the start day and end day of a task by clicking and dragging on the start or end of a task with the mouse (20 pixels after the start or 20 pixels before the end of the rectangle. The user should not be able to set the start or end of the task beyond the range 1-30 and also should not be able to set the duration to be less than 1. You can use the methods [mousePressed](https://processing.org/reference/mousePressed_.html) and [mouseDragged](https://processing.org/reference/mouseDragged_.html) to implement this functionality. The map function will be useful here too. It is not necessary to save the tasks back to the file.
-	- Be sure to make regular commits with messages about what changes are contained in the commit on your repository throughout the time you are working on the test. This will help me to verify that your work is your own
-	- No collaboration is permitted. Any students found to have collaborated or posted in social media etc. about the test before the submission time will receive a fail grade.
+# Description of the assignment
 
-## Marking Scheme
+# Instructions
 
-| Description | Marks |
-|-------------|-------|
-| Creating the Task class | 15 marks |
-| Loading and printing the tasks | 15 marks |
-| Displaying the tasks | 30 marks |
-| Altering the start and end of tasks | 30 marks |
-| Use of git | 10 marks |
+# How it works
 
-[Submit the URL to your solution before 12 midnight tonight through this link](https://docs.google.com/forms/d/e/1FAIpQLSdtkqkTfh46SVctClLyX8nce4C1Chv0XvVsnwCjlo5cFiIOQQ/viewform).
+# What I am most proud of in the assignment
+
+# Markdown Tutorial
+
+This is *emphasis*
+
+This is a bulleted list
+
+- Item
+- Item
+
+This is a numbered list
+
+1. Item
+1. Item
+
+This is a [hyperlink](http://bryanduggan.org)
+
+# Headings
+## Headings
+#### Headings
+##### Headings
+
+This is code:
+
+```Java
+public void render()
+{
+	ui.noFill();
+	ui.stroke(255);
+	ui.rect(x, y, width, height);
+	ui.textAlign(PApplet.CENTER, PApplet.CENTER);
+	ui.text(text, x + width * 0.5f, y + height * 0.5f);
+}
+```
+
+So is this without specifying the language:
+
+```
+public void render()
+{
+	ui.noFill();
+	ui.stroke(255);
+	ui.rect(x, y, width, height);
+	ui.textAlign(PApplet.CENTER, PApplet.CENTER);
+	ui.text(text, x + width * 0.5f, y + height * 0.5f);
+}
+```
+
+This is an image using a relative URL:
+
+![An image](images/p8.png)
+
+This is an image using an absolute URL:
+
+![A different image](https://bryanduggandotorg.files.wordpress.com/2019/02/infinite-forms-00045.png?w=595&h=&zoom=2)
+
+This is a youtube video:
+
+[![YouTube](http://img.youtube.com/vi/J2kHSSFA4NU/0.jpg)](https://www.youtube.com/watch?v=J2kHSSFA4NU)
+
+This is a table:
+
+| Heading 1 | Heading 2 |
+|-----------|-----------|
+|Some stuff | Some more stuff in this column |
+|Some stuff | Some more stuff in this column |
+|Some stuff | Some more stuff in this column |
+|Some stuff | Some more stuff in this column |
+
