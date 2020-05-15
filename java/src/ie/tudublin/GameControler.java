@@ -67,6 +67,8 @@ public class GameControler extends PApplet{
         {
             Song tempSongStore = new Song();
 			tempSongStore.cover = loadImage(tr.getString("CoverImage"));
+			tempSongStore.audio = new SoundFile(this, tr.getString("AudioFile"));
+			tempSongStore.beatCsv = loadTable(tr.getString("BeatMap"),"header");
             songs.add(tempSongStore);
 			if(debug){
 				println("loaded song" + tempSongStore);
