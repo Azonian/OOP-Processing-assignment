@@ -103,9 +103,10 @@ public class GameControler extends PApplet{
 	} 
 	 
 	public void setup(){
+		
 		debug = true;
 		textAlign(CENTER);
-		clickableRadius = width/10.f;
+		clickableRadius = width/20.f;
 		
 		playClickableX = width/3.f;
 		playClickableY = height/2.f;
@@ -139,6 +140,8 @@ public class GameControler extends PApplet{
 		dispalyMode = "OpenScreen";
 		
 		beatMapFileHeader = "rowData,Xcord,Ycord";
+		
+		noStroke();
 	 }
 	 
 	 public void draw(){
@@ -233,7 +236,7 @@ public class GameControler extends PApplet{
 	//gernal rediring tech
 	public void drawClickables(){
 		for(ClickableBeat b:clickables){
-			circle(b.xCord,b.yCord,clickableRadius);
+			circle(b.xCord,b.yCord,clickableRadius*2);
 		}
 	}
 	
@@ -265,14 +268,32 @@ public class GameControler extends PApplet{
 		//println("attempting to run debug");
 		//println("attempting to play audio" + songToPlay.audio);
 		songToPlay.audio.play();
+		fill(255);
 	}
 	
 	public void drawCreateTrack(){
+		println("attempting to draw clickables");
 		drawClickables();
 	}
 	
 	public void createTrackMouseCheck(){
+		println("attempting to add a clickable");
+		float newBeatX;
+		float newBeatY;
 		
+		newBeatX = mouseX;
+		newBeatY = mouseY;
+		
+		for(ClickableBeat b:clickables){
+			if(pythagrosTherom(mouseX,mouseY,b.xCord,b.yCord) <= clickableRadius){
+				newBeatX = b.xCord;
+				newBeatY = b.yCord;
+				break;//i know this is bad but it runs fast
+			}
+		}
+
+		ClickableBeat temp = new ClickableBeat(1f,newBeatX,newBeatY);
+		clickables.add(temp);
 	}
 	
 	//createMenu handling
@@ -281,7 +302,7 @@ public class GameControler extends PApplet{
 		clickables.clear();
 	}
 	
-	public void drawCreateTrackMenu(){
+	public void drawCreateTrackMenu(){//turn this into methods
 		image(songs.get((int)postionInMenu).cover,menuItem0X,menuItem0Y,menuItemW,menuItemH);
 		if(postionInMenu+1 < songs.size()){
 			image(songs.get((int)(postionInMenu*4+1)).cover,menuItem1X,menuItem1Y,menuItemW,menuItemH);
@@ -299,7 +320,7 @@ public class GameControler extends PApplet{
 		//}
 	}
 	
-	public void createTrackMenuMouseCheck(){
+	public void createTrackMenuMouseCheck(){//turn this into methods
 		if(mouseWithInBox(menuItem0X,menuItem0Y,menuItemW,menuItemH)){
 			songToPlay = songs.get((int)(postionInMenu*4));
 			goToCreate();
