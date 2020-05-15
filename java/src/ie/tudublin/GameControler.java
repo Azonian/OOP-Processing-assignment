@@ -73,7 +73,10 @@ public class GameControler extends PApplet{
         {
             Song tempSongStore = new Song();
 			tempSongStore.cover = loadImage(tr.getString("CoverImage"));
+			println("audio file load" + tr.getString("AudioFile"));
 			tempSongStore.audio = new SoundFile(this, tr.getString("AudioFile"));
+			println("tempSongStore.audio is " + tempSongStore.audio); 
+			//tempSongStore.audio.play();
 			tempSongStore.beatCsv = loadTable(tr.getString("BeatMap"),"header");
             songs.add(tempSongStore);
 			if(debug){
@@ -89,6 +92,7 @@ public class GameControler extends PApplet{
 		println("songs loaded:");
 		for(Song s:songs){
 			println(s);
+			//s.audio.play();
 		}
 	}
 	
@@ -258,11 +262,13 @@ public class GameControler extends PApplet{
 	//create handling
 	public void goToCreate(){
 		dispalyMode = "Create";
+		//println("attempting to run debug");
+		//println("attempting to play audio" + songToPlay.audio);
 		songToPlay.audio.play();
 	}
 	
 	public void drawCreateTrack(){
-		
+		drawClickables();
 	}
 	
 	public void createTrackMouseCheck(){
@@ -295,20 +301,21 @@ public class GameControler extends PApplet{
 	
 	public void createTrackMenuMouseCheck(){
 		if(mouseWithInBox(menuItem0X,menuItem0Y,menuItemW,menuItemH)){
-			goToCreate();
 			songToPlay = songs.get((int)(postionInMenu*4));
+			goToCreate();
+			println("loaded song " + songToPlay + " to song to play");
 		}
 		if(mouseWithInBox(menuItem1X,menuItem1Y,menuItemW,menuItemH) && (postionInMenu*4+1 < songs.size())){
-			goToCreate();
 			songToPlay = songs.get((int)(postionInMenu*4 + 1));
+			goToCreate();
 		}
 		if(mouseWithInBox(menuItem2X,menuItem2Y,menuItemW,menuItemH) && (postionInMenu*4+2 < songs.size())){
-			goToCreate();
 			songToPlay = songs.get((int)(postionInMenu*4 + 2));
+			goToCreate();
 		}
 		if(mouseWithInBox(menuItem3X,menuItem3Y,menuItemW,menuItemH) && (postionInMenu*4+3 < songs.size())){
-			goToCreate();
 			songToPlay = songs.get((int)(postionInMenu*4+3));
+			goToCreate();
 		}
 		//navigate back and foward buttons
 		//if(postionInMenu != 0){	

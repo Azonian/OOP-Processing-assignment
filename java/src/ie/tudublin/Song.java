@@ -38,7 +38,5 @@ public class Song extends PApplet{
 		this.beatCsv = beatCsv;
 	}
 	*/
-	public Song(){
-		
-	}
+	public Song(){}
 }//end song
