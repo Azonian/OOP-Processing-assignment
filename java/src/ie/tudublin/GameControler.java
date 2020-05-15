@@ -11,6 +11,7 @@ import processing.data.Table;
 import processing.data.TableRow;
 
 import processing.core.*;
+import processing.sound.*;
 
 public class GameControler extends PApplet{
 	boolean  debug;

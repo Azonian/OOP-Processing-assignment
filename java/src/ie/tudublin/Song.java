@@ -10,12 +10,14 @@ import processing.data.Table;
 import processing.data.TableRow;
 
 import processing.core.*;
+import processing.sound.*;
+
 //-----------------------------------------------------------------------------
 public class Song extends PApplet{
 	public PImage cover;
 	public SoundFile audio;
 	public Table beatCsv;
-	
+	/*
 	public Song(TableRow tr) {
 		
 		this(
@@ -24,6 +26,7 @@ public class Song extends PApplet{
 			,tr.getString("BeatMap")
 		);
 	}
+	*/
 	/*
 	public Song(String cover,String audio,String beatCsv) {
 		println("Song created attempting to load image");
