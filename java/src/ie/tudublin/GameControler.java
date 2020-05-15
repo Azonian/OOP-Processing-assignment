@@ -26,6 +26,7 @@ public class GameControler extends PApplet{
 	*/
 	ArrayList<Song> songs = new ArrayList<Song>();
 	ArrayList<ClickableBeat> clickables = new ArrayList<ClickableBeat>();
+	
 	/*stores the info for each song
 	has headers: CoverImage,AudioFile,BeatMap*/
 	
@@ -56,6 +57,10 @@ public class GameControler extends PApplet{
 	
 	float menuItem3X;
 	float menuItem3Y;
+	
+	String beatMapFileHeader;
+	
+	//PrintWriter output;
 	
 	public void loadSongs() {
 		if(debug){
@@ -96,7 +101,7 @@ public class GameControler extends PApplet{
 	public void setup(){
 		debug = true;
 		textAlign(CENTER);
-		clickableRadius = width/20.f;
+		clickableRadius = width/10.f;
 		
 		playClickableX = width/3.f;
 		playClickableY = height/2.f;
@@ -105,7 +110,7 @@ public class GameControler extends PApplet{
 		createClickableY = height/2.f;
 		
 		largeTextSize = height/5.f;
-		smallTextSize = height/10.f;
+		smallTextSize = height/25.f;
 		
 		postionInMenu = 0.f;
 		
@@ -126,7 +131,10 @@ public class GameControler extends PApplet{
 		
 		loadSongs();
 		printSongs();
+		
 		dispalyMode = "OpenScreen";
+		
+		beatMapFileHeader = "rowData,Xcord,Ycord";
 	 }
 	 
 	 public void draw(){
@@ -193,15 +201,17 @@ public class GameControler extends PApplet{
 		dispalyMode = "PlayOrCreate";
 		ClickableBeat temp = new ClickableBeat(1.f,playClickableX,playClickableY);
 		clickables.add(temp);
-		temp.xCord = createClickableY;
+		temp = new ClickableBeat(1.f,createClickableX,createClickableY);
 		clickables.add(temp);
 	}
 	
 	public void drawPlayOrCreate(){
+		fill(255);
 		drawClickables();
 		textSize(smallTextSize);
-		text("PLAY",playClickableX,playClickableY);
-		text("CREATE",createClickableX,createClickableY);
+		fill(0);
+		text("PLAY",playClickableX,playClickableY + width/100);
+		text("CREATE",createClickableX,createClickableY + width/100);
 	}
 	
 	public void playOrCreateMouseCheck(){
@@ -218,7 +228,9 @@ public class GameControler extends PApplet{
 	
 	//gernal rediring tech
 	public void drawClickables(){
-		
+		for(ClickableBeat b:clickables){
+			circle(b.xCord,b.yCord,clickableRadius);
+		}
 	}
 	
 	//play handling
@@ -246,6 +258,7 @@ public class GameControler extends PApplet{
 	//create handling
 	public void goToCreate(){
 		dispalyMode = "Create";
+		songToPlay.audio.play();
 	}
 	
 	public void drawCreateTrack(){
