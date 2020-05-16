@@ -16,7 +16,7 @@ import processing.sound.*;
 public class Song extends PApplet{
 	public PImage cover;
 	public SoundFile audio;
-	public Table beatCsv;
+	public String beatCsv;
 	/*
 	public Song(TableRow tr) {
 		

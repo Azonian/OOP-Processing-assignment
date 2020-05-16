@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import java.lang.Math;
 
+import java.io.*;
+
 //import processing.core.PApplet;
 import processing.data.Table;
 import processing.data.TableRow;
@@ -31,6 +33,8 @@ public class GameControler extends PApplet{
 	has headers: CoverImage,AudioFile,BeatMap*/
 	
 	Song songToPlay;
+	float songFrame;
+	
 	
 	float clickableRadius;
 	float playClickableX;
@@ -77,7 +81,7 @@ public class GameControler extends PApplet{
 			tempSongStore.audio = new SoundFile(this, tr.getString("AudioFile"));
 			println("tempSongStore.audio is " + tempSongStore.audio); 
 			//tempSongStore.audio.play();
-			tempSongStore.beatCsv = loadTable(tr.getString("BeatMap"),"header");
+			tempSongStore.beatCsv = tr.getString("BeatMap");
             songs.add(tempSongStore);
 			if(debug){
 				println("loaded song" + tempSongStore);
@@ -251,7 +255,7 @@ public class GameControler extends PApplet{
 	
 	//PlayMenu handling
 	public void goToPlayMenu(){
-		//dispalyMode = "Play"
+		dispalyMode = "Play"
 	}
 	
 	public void drawSongMenu(){
@@ -268,12 +272,18 @@ public class GameControler extends PApplet{
 		//println("attempting to run debug");
 		//println("attempting to play audio" + songToPlay.audio);
 		songToPlay.audio.play();
+		songFrame = 0.f;
 		fill(255);
 	}
 	
 	public void drawCreateTrack(){
 		println("attempting to draw clickables");
 		drawClickables();
+		songFrame++;
+		if(!(songToPlay.audio.isPlaying())){
+			createTrackClickablesToFile();
+			goToCreateMenu();
+		}
 	}
 	
 	public void createTrackMouseCheck(){
@@ -288,12 +298,27 @@ public class GameControler extends PApplet{
 			if(pythagrosTherom(mouseX,mouseY,b.xCord,b.yCord) <= clickableRadius){
 				newBeatX = b.xCord;
 				newBeatY = b.yCord;
-				break;//i know this is bad but it runs fast
+				break;//i know this is bad but it runs fast mabye in
 			}
 		}
 
-		ClickableBeat temp = new ClickableBeat(1f,newBeatX,newBeatY);
+		ClickableBeat temp = new ClickableBeat(songFrame,newBeatX,newBeatY);
 		clickables.add(temp);
+	}
+	
+	public void createTrackClickablesToFile(){
+		println("amptting to open ./data/" + songToPlay.beatCsv);
+		PrintWriter output = createWriter("./data/"+songToPlay.beatCsv);
+		println("worked");
+		for(ClickableBeat b:clickables){
+			for(int i = 0;i < b.lifeSpan;i++){
+				output.println("0,,");
+			}
+			output.println("1," + b.xCord + "," + b.yCord);
+		}
+		
+		output.flush(); // Writes the remaining data to the file
+		output.close();
 	}
 	
 	//createMenu handling
