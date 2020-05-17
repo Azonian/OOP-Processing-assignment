@@ -29,4 +29,8 @@ public class ClickableBeat extends PApplet{
 		this.xCord = xCord;
 		this.yCord = yCord;
 	}
+	
+	public ClickableBeat(){
+		
+	}
 }//end ClickableBeat;

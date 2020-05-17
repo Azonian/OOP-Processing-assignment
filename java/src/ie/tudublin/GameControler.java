@@ -35,6 +35,7 @@ public class GameControler extends PApplet{
 	Song songToPlay;
 	float songFrame;
 	
+	float DefaultClickableLifeSpan;
 	
 	float clickableRadius;
 	float playClickableX;
@@ -61,6 +62,8 @@ public class GameControler extends PApplet{
 	
 	float menuItem3X;
 	float menuItem3Y;
+	
+	Table clickableTable;
 	
 	String beatMapFileHeader;
 	
@@ -137,6 +140,8 @@ public class GameControler extends PApplet{
 		
 		menuItem3X = 6.f*(width/11.f);
 		menuItem3Y = 6.f*(height/11.f);
+		
+		DefaultClickableLifeSpan = 300.f;
 		
 		loadSongs();
 		printSongs();
@@ -245,25 +250,104 @@ public class GameControler extends PApplet{
 	}
 	
 	//play handling
-	public void drawSongClickables(){
-		
+	public void goToPlay(){
+		println("go to play called");
+		dispalyMode ="Play";
+		clickableTable = loadTable(songToPlay.beatCsv,"header");
+		println( songToPlay.beatCsv + " opemed");
+		songToPlay.audio.play();
+		songFrame = 0.f;
+		fill(255);
 	}
 	
+	public void drawSongClickables(){
+		if(songFrame < clickableTable.getRowCount()){
+			for(ClickableBeat b:clickables){
+				println("drawing circle a" +b.xCord+" "+b.yCord + " with a width of " + (b.lifeSpan/DefaultClickableLifeSpan)*2*clickableRadius);
+				circle(b.xCord,b.yCord,(b.lifeSpan/DefaultClickableLifeSpan)*2*clickableRadius);
+				b.lifeSpan--;
+			}
+			if(clickableTable.getFloat((int)songFrame,"rowData") == 1){
+				ClickableBeat temp = new ClickableBeat();
+				temp.xCord = clickableTable.getFloat((int)songFrame,"Xcord");
+				temp.yCord = clickableTable.getFloat((int)songFrame,"Ycord");
+				temp.lifeSpan = DefaultClickableLifeSpan;
+				clickables.add(temp);
+			}
+			else{
+				println("row had 0 in row data");
+			}
+			songFrame++;
+			println("incremented song frame frame is now = " + songFrame);
+		}
+		if(!(songToPlay.audio.isPlaying())){
+			goToPlayMenu();
+		}
+	}
+	
+	/*if(!(songToPlay.audio.isPlaying())){
+			createTrackClickablesToFile();
+			goToCreateMenu();
+		}*/
+	
 	public void songClickablesMouseCheck(){
+		ArrayList<ClickableBeat> clickablesToDelete = new ArrayList<ClickableBeat>();
 		
+		for(ClickableBeat b:clickables){
+			if(pythagrosTherom(mouseX,mouseY,b.xCord,b.yCord) <= (b.lifeSpan / DefaultClickableLifeSpan)*clickableRadius){
+				clickablesToDelete.add(b);
+			}
+		}
+		for(ClickableBeat b:clickablesToDelete){
+			clickables.remove(b);
+		}
+		//pythagrosTherom(mouseX,mouseY,createClickableX,createClickableY)
 	}
 	
 	//PlayMenu handling
 	public void goToPlayMenu(){
-		dispalyMode = "Play"
+		dispalyMode = "PlayMenu";
+		clickables.clear();
 	}
 	
 	public void drawSongMenu(){
-		
+		image(songs.get((int)postionInMenu).cover,menuItem0X,menuItem0Y,menuItemW,menuItemH);
+		if(postionInMenu+1 < songs.size()){
+			image(songs.get((int)(postionInMenu*4+1)).cover,menuItem1X,menuItem1Y,menuItemW,menuItemH);
+		}
+		if(postionInMenu+2 < songs.size()){
+			image(songs.get((int)(postionInMenu*4+2)).cover,menuItem2X,menuItem2Y,menuItemW,menuItemH);
+		}
+		if(postionInMenu+3 < songs.size()){
+			image(songs.get((int)(postionInMenu*4+3)).cover,menuItem3X,menuItem3Y,menuItemW,menuItemH);
+		}
 	}
 	
 	public void songMenuMouseCheck (){
-		
+		if(mouseWithInBox(menuItem0X,menuItem0Y,menuItemW,menuItemH)){
+			songToPlay = songs.get((int)(postionInMenu*4));
+			goToPlay();
+		}
+		if(mouseWithInBox(menuItem1X,menuItem1Y,menuItemW,menuItemH) && (postionInMenu*4+1 < songs.size())){
+			songToPlay = songs.get((int)(postionInMenu*4 + 1));
+			goToPlay();
+		}
+		if(mouseWithInBox(menuItem2X,menuItem2Y,menuItemW,menuItemH) && (postionInMenu*4+2 < songs.size())){
+			songToPlay = songs.get((int)(postionInMenu*4 + 2));
+			goToPlay();
+		}
+		if(mouseWithInBox(menuItem3X,menuItem3Y,menuItemW,menuItemH) && (postionInMenu*4+3 < songs.size())){
+			songToPlay = songs.get((int)(postionInMenu*4+3));
+			goToPlay();
+		}
+		//navigate back and foward buttons
+		//if(postionInMenu != 0){	
+		//}
+		//if(postionInMenu + 4 >= songs.size()){	
+		//}
+		if(debug){
+			println("songToPlay = " + songToPlay);
+		}
 	}
 	
 	//create handling
@@ -310,10 +394,13 @@ public class GameControler extends PApplet{
 		println("amptting to open ./data/" + songToPlay.beatCsv);
 		PrintWriter output = createWriter("./data/"+songToPlay.beatCsv);
 		println("worked");
+		output.println(beatMapFileHeader);
+		float lastLifeSpan = 0;
 		for(ClickableBeat b:clickables){
-			for(int i = 0;i < b.lifeSpan;i++){
+			for(int i = 0;i < b.lifeSpan - lastLifeSpan;i++){
 				output.println("0,,");
 			}
+			lastLifeSpan = b.lifeSpan;
 			output.println("1," + b.xCord + "," + b.yCord);
 		}
 		
